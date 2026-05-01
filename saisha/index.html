@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Reveal | Saisha</title>
+    <!-- Ultra-Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amita:wght@700&family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #070002; /* Pitch black with a hint of ruby */
+            --bg-glow: #2a0411;
+            --gold-light: #fff3c4;
+            --gold-mid: #d4af37;
+            --gold-dark: #8c6b16;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-deep);
+            color: white;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* Cinematic breathing background */
+        .bg-layer {
+            position: absolute;
+            top: -10%; left: -10%; width: 120%; height: 120%;
+            background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-deep) 60%);
+            z-index: 0;
+            animation: slow-zoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes slow-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* The Container */
+        .reveal-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Phases */
+        .phase {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            opacity: 0;
+            transition: opacity 2s ease, transform 2.5s ease, filter 2s ease;
+            filter: blur(15px);
+            pointer-events: none;
+            width: 100%;
+        }
+
+        .phase.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            filter: blur(0px);
+        }
+
+        .phase.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.05);
+            filter: blur(10px);
+        }
+
+        /* Typography */
+        .marathi-text {
+            font-family: 'Amita', serif;
+            font-size: 2.5rem;
+            color: var(--gold-light);
+            text-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .english-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* The Reveal Text */
+        .marathi-name {
+            font-family: 'Amita', serif;
+            font-size: 10vw;
+            font-weight: 700;
+            color: var(--gold-light);
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.8);
+            margin-bottom: -20px;
+        }
+
+        .english-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 11vw;
+            font-weight: 900;
+            letter-spacing: 15px;
+            margin-left: 15px;
+            /* Premium Light Sweep Gradient */
+            background: linear-gradient(
+                to right, 
+                var(--gold-dark) 0%, 
+                var(--gold-mid) 40%, 
+                #ffffff 50%, 
+                var(--gold-mid) 60%, 
+                var(--gold-dark) 100%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: light-sweep 4s linear infinite;
+        }
+
+        @keyframes light-sweep {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+
+        /* Sparkle Canvas */
+        #sparkle-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* The Royal Seal Start Button */
+        #start-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.5s ease;
+        }
+
+        .seal-btn {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-mid);
+            background: transparent;
+            color: var(--gold-mid);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            animation: pulse-seal 2s infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .seal-text {
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 4px;
+            color: var(--gold-mid);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulse-seal {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 30px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        @media (max-width: 768px) {
+            .marathi-text { font-size: 1.8rem; }
+            .english-text { font-size: 0.9rem; }
+            .marathi-name { font-size: 20vw; }
+            .english-name { font-size: 18vw; letter-spacing: 5px; margin-left: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- REPLACE 'your-music.mp3' WITH YOUR AUDIO FILE -->
+  <!--  <audio id="bg-music">  -->
+  <!--      <source src="your-music.mp3" type="audio/mpeg">  -->
+  <!--  </audio>  -->
+
+    <div class="bg-layer"></div>
+    <canvas id="sparkle-canvas"></canvas>
+
+    <!-- Start Overlay (The Royal Seal) -->
+    <div id="start-screen" onclick="startReveal()">
+        <div class="seal-btn">✧</div>
+        <div class="seal-text">Tap to Unveil</div>
+    </div>
+
+    <!-- Content Sequence -->
+    <div class="reveal-container">
+        
+        <div class="phase" id="phase-1">
+            <div class="marathi-text">आमच्या अंगणात आली एक चिमुकली परी...</div>
+            <div class="english-text">A little fairy has arrived...</div>
+        </div>
+
+        <div class="phase" id="phase-2">
+            <div class="marathi-text">आमच्या राजकन्येचे नाव...</div>
+            <div class="english-text">And we lovingly name her...</div>
+        </div>
+
+        <div class="phase" id="phase-3">
+            <div class="marathi-name">साईशा</div>
+            <div class="english-name">SAISHA</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Particle Engine for the Golden Burst
+        const canvas = document.getElementById('sparkle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                // Burst randomly in 360 degrees
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 8 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.life = 1.0;
+                this.decay = Math.random() * 0.015 + 0.005;
+                this.size = Math.random() * 4 + 1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.05; // Slight gravity
+                this.life -= this.decay;
+            }
+            draw() {
+                ctx.globalAlpha = Math.max(0, this.life);
+                ctx.fillStyle = '#d4af37';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function triggerBurst() {
+            for (let i = 0; i < 150; i++) {
+                particles.push(new Particle(canvas.width / 2, canvas.height / 2));
+            }
+            animateParticles();
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = particles.filter(p => p.life > 0);
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (particles.length > 0) requestAnimationFrame(animateParticles);
+        }
+
+        // Sequence Controller
+        function startReveal() {
+            // Hide Cover
+            const startScreen = document.getElementById('start-screen');
+            startScreen.style.opacity = '0';
+            setTimeout(() => startScreen.style.display = 'none', 1500);
+
+            // Play Audio
+            const music = document.getElementById('bg-music');
+            music.play().catch(e => console.log("Audio play failed:", e));
+
+            // Go Fullscreen
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(e => console.log(e));
+            }
+
+            const p1 = document.getElementById('phase-1');
+            const p2 = document.getElementById('phase-2');
+            const p3 = document.getElementById('phase-3');
+
+            // Timing Sequence
+            setTimeout(() => { p1.classList.add('active'); }, 1000);
+
+            setTimeout(() => {
+                p1.classList.remove('active');
+                p1.classList.add('fade-out');
+                setTimeout(() => p2.classList.add('active'), 2000);
+            }, 5000);
+
+            setTimeout(() => {
+                p2.classList.remove('active');
+                p2.classList.add('fade-out');
+                setTimeout(() => {
+                    p3.classList.add('active');
+                    triggerBurst(); // FIRE THE GOLDEN SPARKLES!
+                }, 2500); 
+            }, 10000);
+        }
+    </script>
+
+</body>
+</html>

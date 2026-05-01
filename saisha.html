@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Reveal | Saisha</title>
+    <!-- Ultra-Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #070002;
+            --bg-glow: #2a0411;
+            --gold-light: #fff3c4;
+            --gold-mid: #d4af37;
+            --gold-dark: #8c6b16;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-deep);
+            color: white;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        /* Cinematic breathing background */
+        .bg-layer {
+            position: absolute;
+            top: -10%; left: -10%; width: 120%; height: 120%;
+            background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-deep) 60%);
+            z-index: 0;
+            animation: slow-zoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes slow-zoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .reveal-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Ultra-smooth long transitions for a 3-minute buildup */
+        .phase {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            opacity: 0;
+            transition: opacity 3s ease, transform 4s ease, filter 3s ease;
+            filter: blur(15px);
+            pointer-events: none;
+            width: 90%;
+        }
+
+        .phase.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            filter: blur(0px);
+        }
+
+        .phase.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(1.05);
+            filter: blur(10px);
+        }
+
+        /* Typography */
+        .marathi-text {
+            font-family: 'Amita', serif;
+            font-size: 2.5rem;
+            color: var(--gold-light);
+            text-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .english-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+        }
+
+        /* The Final Reveal Text */
+        .marathi-name {
+            font-family: 'Amita', serif;
+            font-size: 10vw;
+            font-weight: 700;
+            color: var(--gold-light);
+            text-shadow: 0 0 40px rgba(212, 175, 55, 0.8);
+            margin-bottom: -20px;
+        }
+
+        .english-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 11vw;
+            font-weight: 900;
+            letter-spacing: 15px;
+            margin-left: 15px;
+            background: linear-gradient(to right, var(--gold-dark) 0%, var(--gold-mid) 40%, #ffffff 50%, var(--gold-mid) 60%, var(--gold-dark) 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: light-sweep 4s linear infinite;
+        }
+
+        @keyframes light-sweep {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+
+        #sparkle-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5; pointer-events: none;
+        }
+
+        /* The Royal Seal Start Button */
+        #start-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 50;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 2s ease;
+        }
+
+        .seal-btn {
+            width: 100px; height: 100px;
+            border-radius: 50%; border: 2px solid var(--gold-mid);
+            background: transparent; color: var(--gold-mid);
+            font-size: 1.5rem; cursor: pointer;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            animation: pulse-seal 2s infinite;
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.5s ease;
+        }
+
+        .seal-btn:hover { background: var(--gold-mid); color: #000; }
+
+        .seal-text {
+            margin-top: 20px; font-family: 'Montserrat', sans-serif;
+            letter-spacing: 4px; color: var(--gold-mid);
+            font-size: 0.9rem; text-transform: uppercase;
+        }
+
+        @keyframes pulse-seal {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 30px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        @media (max-width: 768px) {
+            .marathi-text { font-size: 1.6rem; }
+            .english-text { font-size: 0.8rem; letter-spacing: 4px; }
+            .marathi-name { font-size: 20vw; }
+            .english-name { font-size: 16vw; letter-spacing: 8px; margin-left: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUDIO SOURCING -->
+    <audio id="bg-music">
+        <source src="saisha.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="bg-layer"></div>
+    <canvas id="sparkle-canvas"></canvas>
+
+    <div id="start-screen" onclick="startReveal()">
+        <div class="seal-btn">✧</div>
+        <div class="seal-text">Tap to Begin Ceremony</div>
+    </div>
+
+    <div class="reveal-container">
+        
+        <!-- Phases to cover the 3 minute build up -->
+        <div class="phase" id="phase-1">
+            <div class="marathi-text">आमच्या अंगणात आली एक चिमुकली परी...</div>
+            <div class="english-text">A little fairy has arrived in our courtyard...</div>
+        </div>
+
+        <div class="phase" id="phase-2">
+            <div class="marathi-text">पावलांनी तिच्या घरात आलाय नवा बहर...</div>
+            <div class="english-text">Her footsteps bring a new spring to our home...</div>
+        </div>
+
+        <div class="phase" id="phase-3">
+            <div class="marathi-text">तिच्या एका हसण्याने उजळल्या दाही दिशा...</div>
+            <div class="english-text">Her smile illuminates our entire world...</div>
+        </div>
+
+        <div class="phase" id="phase-4">
+            <div class="marathi-text">आई-बाबांचे स्वप्न, आजी-आजोबांचा जीव की प्राण...</div>
+            <div class="english-text">A dream realized, the heartbeat of our family...</div>
+        </div>
+
+        <div class="phase" id="phase-5">
+            <div class="marathi-text">आता ही गोड प्रतिक्षा संपणार...</div>
+            <div class="english-text">The beautiful wait is finally over...</div>
+        </div>
+
+        <div class="phase" id="phase-6">
+            <div class="marathi-text">आमच्या राजकन्येचे नाव...</div>
+            <div class="english-text">And we proudly name our princess...</div>
+        </div>
+
+        <!-- The Final Reveal at exactly 3:00 -->
+        <div class="phase" id="phase-7">
+            <div class="marathi-name">साईशा</div>
+            <div class="english-name">SAISHA</div>
+        </div>
+
+    </div>
+
+    <script>
+        // SPARKLE PARTICLE ENGINE
+        const canvas = document.getElementById('sparkle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 10 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.life = 1.0;
+                this.decay = Math.random() * 0.015 + 0.005;
+                this.size = Math.random() * 5 + 1.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                this.vy += 0.08; // Gravity
+                this.life -= this.decay;
+            }
+            draw() {
+                ctx.globalAlpha = Math.max(0, this.life);
+                ctx.fillStyle = '#d4af37';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#d4af37';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function triggerBurst() {
+            for (let i = 0; i < 200; i++) {
+                particles.push(new Particle(canvas.width / 2, canvas.height / 2));
+            }
+            animateParticles();
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = particles.filter(p => p.life > 0);
+            particles.forEach(p => { p.update(); p.draw(); });
+            if (particles.length > 0) requestAnimationFrame(animateParticles);
+        }
+
+        // AUDIO SYNC CONTROLLER
+        let currentPhase = 0;
+        let burstFired = false;
+
+        function switchPhase(newPhase) {
+            if (currentPhase === newPhase) return;
+            
+            // Fade out everything
+            document.querySelectorAll('.phase').forEach(p => {
+                p.classList.remove('active');
+                p.classList.add('fade-out');
+            });
+
+            // Show new phase if it's not a blackout phase (0)
+            if (newPhase > 0) {
+                const next = document.getElementById('phase-' + newPhase);
+                if (next) {
+                    next.classList.remove('fade-out');
+                    next.classList.add('active');
+                }
+            }
+            currentPhase = newPhase;
+        }
+
+        function startReveal() {
+            // Remove start screen
+            const startScreen = document.getElementById('start-screen');
+            startScreen.style.opacity = '0';
+            setTimeout(() => startScreen.style.display = 'none', 2000);
+
+            // Play music & Fullscreen
+            const audio = document.getElementById('bg-music');
+            audio.play().catch(e => console.log("Audio block:", e));
+            
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(e => {});
+            }
+
+            // Sync visuals directly to audio track time
+            audio.addEventListener('timeupdate', () => {
+                const time = audio.currentTime; // Gets exact second of the song
+
+                // The Schedule (in seconds)
+                if (time >= 2 && time < 30) switchPhase(1);         // 0:02 - 0:30
+                else if (time >= 30 && time < 60) switchPhase(2);   // 0:30 - 1:00
+                else if (time >= 60 && time < 90) switchPhase(3);   // 1:00 - 1:30
+                else if (time >= 90 && time < 120) switchPhase(4);  // 1:30 - 2:00
+                else if (time >= 120 && time < 150) switchPhase(5); // 2:00 - 2:30
+                else if (time >= 150 && time < 174) switchPhase(6); // 2:30 - 2:54
+                else if (time >= 174 && time < 180) switchPhase(0); // 2:54 - 3:00 (BLACKOUT SUSPENSE)
+                else if (time >= 180 && time < 210) {               // 3:00 THE REVEAL
+                    switchPhase(7);
+                    if (!burstFired) {
+                        triggerBurst();
+                        burstFired = true;
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

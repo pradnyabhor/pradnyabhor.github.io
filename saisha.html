@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Grand Reveal | Saisha</title>
     <!-- Ultra-Premium Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Amita:wght@700&family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amita:wght@700&family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #070002; /* Pitch black with a hint of ruby */
+            --bg-deep: #070002; 
             --bg-glow: #2a0411;
             --gold-light: #fff3c4;
             --gold-mid: #d4af37;
@@ -24,91 +24,114 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px;
+            /* Prevents pull-to-refresh on mobile */
+            overscroll-behavior-y: none; 
         }
 
         /* Cinematic breathing background */
         .bg-layer {
             position: absolute;
-            top: -10%; left: -10%; width: 120%; height: 120%;
-            background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-deep) 60%);
+            top: -20%; left: -20%; width: 140%; height: 140%;
+            background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-deep) 65%);
             z-index: 0;
             animation: slow-zoom 20s ease-in-out infinite alternate;
         }
 
+        /* Subtle vignette overlay for a cinematic frame */
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+            z-index: 1;
+            pointer-events: none;
+        }
+
         @keyframes slow-zoom {
             0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
+            100% { transform: scale(1.15); }
         }
 
-        /* The Container */
+        /* The Container - perfectly covers screen */
         .reveal-container {
-            position: relative;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 10;
-            text-align: center;
-            width: 100%;
         }
 
-        /* Phases */
+        /* Phases - Upgraded to Flexbox for TRUE dead-center alignment */
         .phase {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.95);
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
             opacity: 0;
+            transform: scale(0.95);
             transition: opacity 2s ease, transform 2.5s ease, filter 2s ease;
             filter: blur(15px);
             pointer-events: none;
-            width: 100%;
         }
 
         .phase.active {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            transform: scale(1);
             filter: blur(0px);
+            /* Adds a very subtle float to active text */
+            animation: gentle-float 6s ease-in-out infinite;
         }
 
         .phase.fade-out {
             opacity: 0;
-            transform: translate(-50%, -50%) scale(1.05);
+            transform: scale(1.05);
             filter: blur(10px);
         }
 
-        /* Typography */
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-5px) scale(1); }
+        }
+
+        /* Liquid Typography - Scales beautifully on all devices */
         .marathi-text {
             font-family: 'Amita', serif;
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 6vw, 3rem);
             color: var(--gold-light);
             text-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
             margin-bottom: 20px;
+            line-height: 1.4;
         }
 
         .english-text {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 6px;
+            font-size: clamp(0.9rem, 3vw, 1.4rem);
+            letter-spacing: clamp(3px, 1vw, 6px);
             text-transform: uppercase;
             color: rgba(255,255,255,0.7);
+            font-weight: 400;
         }
 
         /* The Reveal Text */
         .marathi-name {
             font-family: 'Amita', serif;
-            font-size: 10vw;
+            font-size: clamp(4.5rem, 18vw, 10rem);
             font-weight: 700;
             color: var(--gold-light);
             text-shadow: 0 0 40px rgba(212, 175, 55, 0.8);
-            margin-bottom: -20px;
+            margin-bottom: -10px; /* Pulls English name slightly closer */
         }
 
         .english-name {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 11vw;
+            font-size: clamp(3.5rem, 15vw, 9rem);
             font-weight: 900;
-            letter-spacing: 15px;
-            margin-left: 15px;
+            letter-spacing: clamp(8px, 4vw, 20px);
+            /* Critical fix: Counter-balance the letter spacing to center the text exactly */
+            margin-right: calc(clamp(8px, 4vw, 20px) * -1); 
+            
             /* Premium Light Sweep Gradient */
             background: linear-gradient(
                 to right, 
@@ -153,12 +176,13 @@
         }
 
         .seal-btn {
-            width: 100px; height: 100px;
+            width: clamp(80px, 20vw, 120px); 
+            height: clamp(80px, 20vw, 120px);
             border-radius: 50%;
             border: 2px solid var(--gold-mid);
             background: transparent;
             color: var(--gold-mid);
-            font-size: 1.5rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             cursor: pointer;
             box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
             animation: pulse-seal 2s infinite;
@@ -172,7 +196,7 @@
             font-family: 'Montserrat', sans-serif;
             letter-spacing: 4px;
             color: var(--gold-mid);
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
             text-transform: uppercase;
         }
 
@@ -181,23 +205,17 @@
             70% { box-shadow: 0 0 0 30px rgba(212, 175, 55, 0); }
             100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
-
-        @media (max-width: 768px) {
-            .marathi-text { font-size: 1.8rem; }
-            .english-text { font-size: 0.9rem; }
-            .marathi-name { font-size: 20vw; }
-            .english-name { font-size: 18vw; letter-spacing: 5px; margin-left: 5px; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- REPLACE 'your-music.mp3' WITH YOUR AUDIO FILE -->
-  <!--  <audio id="bg-music">  -->
-  <!--      <source src="your-music.mp3" type="audio/mpeg">  -->
-  <!--  </audio>  -->
+    <!-- AUDIO SOURCING -->
+    <!--  <audio id="bg-music">  -->
+    <!--      <source src="your-music.mp3" type="audio/mpeg">  -->
+    <!--  </audio>  -->
 
     <div class="bg-layer"></div>
+    <div class="vignette"></div>
     <canvas id="sparkle-canvas"></canvas>
 
     <!-- Start Overlay (The Royal Seal) -->
@@ -227,14 +245,19 @@
     </div>
 
     <script>
-        // Particle Engine for the Golden Burst
+        // Upgraded Retina-Ready Particle Engine for the Golden Burst
         const canvas = document.getElementById('sparkle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
 
         function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            // Get device pixel ratio for sharp rendering on mobile
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            ctx.scale(dpr, dpr);
         }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
@@ -243,24 +266,27 @@
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                // Burst randomly in 360 degrees
                 const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 8 + 2;
+                // Faster burst for more impact
+                const speed = Math.random() * 12 + 3; 
                 this.vx = Math.cos(angle) * speed;
                 this.vy = Math.sin(angle) * speed;
                 this.life = 1.0;
                 this.decay = Math.random() * 0.015 + 0.005;
-                this.size = Math.random() * 4 + 1;
+                this.size = Math.random() * 4 + 1.5;
             }
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-                this.vy += 0.05; // Slight gravity
+                this.vy += 0.06; // Gravity
                 this.life -= this.decay;
             }
             draw() {
                 ctx.globalAlpha = Math.max(0, this.life);
-                ctx.fillStyle = '#d4af37';
+                // Added glowing shadow to particles
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#d4af37';
+                ctx.fillStyle = '#fcf6ba';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -268,14 +294,17 @@
         }
 
         function triggerBurst() {
-            for (let i = 0; i < 150; i++) {
-                particles.push(new Particle(canvas.width / 2, canvas.height / 2));
+            // Burst strictly from the center of the viewport
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            for (let i = 0; i < 200; i++) {
+                particles.push(new Particle(centerX, centerY));
             }
             animateParticles();
         }
 
         function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
             particles = particles.filter(p => p.life > 0);
             particles.forEach(p => { p.update(); p.draw(); });
             if (particles.length > 0) requestAnimationFrame(animateParticles);
@@ -288,11 +317,11 @@
             startScreen.style.opacity = '0';
             setTimeout(() => startScreen.style.display = 'none', 1500);
 
-            // Play Audio
-             //const music = document.getElementById('bg-music');
-             //music.play().catch(e => console.log("Audio play failed:", e));
+            // Play Audio (Uncomment when ready)
+            // const music = document.getElementById('bg-music');
+            // music.play().catch(e => console.log("Audio play failed:", e));
 
-            // Go Fullscreen
+            // Go Fullscreen if allowed
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen().catch(e => console.log(e));
             }
